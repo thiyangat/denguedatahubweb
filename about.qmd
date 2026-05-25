@@ -4,7 +4,6 @@ toc: true
 format:
   html:
     theme: default
-jupyter: python3
 ---
 
 <!-- Google tag (gtag.js) -->
