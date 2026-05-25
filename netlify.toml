@@ -1,3 +1,11 @@
+# toml
+[build]
+  command = "quarto render"
+  publish = "_site"
 
-[build.environment]
-  QUARTO_VERSION = "1.4.150"
+[[plugins]]
+  package = "netlify-plugin-quarto"
+
+[context.production.environment]
+  # optional: pin a Quarto CLI version, or omit to use plugin default/latest
+  QUARTO_VERSION = "1.4.295"
