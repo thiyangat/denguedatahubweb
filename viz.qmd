@@ -1,0 +1,35 @@
+---
+title: "Interactive Data Explorer"
+toc: true
+format:
+  html:
+    theme: default
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMF7S9CQZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MMF7S9CQZW');
+</script>
+
+# Data
+
+# Click [here](https://denguedatahub.shinyapps.io/denguedatahub/) to view the app.
+
+Here is a video demonstration.
+
+<!--![](dh.mov)-->
+
+![](shinyapp.mp4)
+
+# Interactive data visualization: Sri Lanka
+
+# Click [here](https://github.com/thiyangt/denguetsibbletalk) to view the app.
+
+Here is a video demonstration.
+
+![](c1_and_c2.mov)

@@ -1,0 +1,140 @@
+---
+title: "All Countries"
+toc: true
+format:
+  html:
+    theme: default
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMF7S9CQZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MMF7S9CQZW');
+</script>
+
+# Level of Dengue risk around the world
+
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE}
+library(denguedatahub)
+library(tsibble)
+level_of_risk
+
+```
+
+
+
+## Summarize and Visualize `level_of_risk`data
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+tab1 <- level_of_risk |> 
+  filter(last_accessed == "2024-09-03") |>
+  group_by(region, level_of_risk) |>
+  summarise(count = n(), .groups = 'drop')
+
+ggplot(tab1, aes(region, count, fill = level_of_risk)) + 
+  geom_bar(stat = "identity", position = position_dodge(preserve = "single")) + 
+  theme(legend.position = "bottom") + 
+  xlab("Region") + 
+  ylab("Number of countries") + 
+  scale_fill_brewer(palette = "Dark2") +
+  scale_x_discrete(drop = TRUE)
+```
+
+# Presence of dengue incidence in 2019
+
+
+
+```{r, warning=FALSE, message=FALSE}
+library(denguedatahub)
+library(ggplot2)
+library(maps)
+library(magrittr)
+library(viridis)
+
+# Filter for the year 2019
+worlddata2019 <- dplyr::filter(world_annual, year == 2019)
+
+# Enhanced plot with caption
+ggplot(worlddata2019, aes(x = long, y = lat, group = group, fill = factor(dengue.present))) +
+  geom_polygon(color = "black") +
+  coord_fixed(1.3) +  # Ensures correct aspect ratio
+  scale_fill_viridis_d(name = "Dengue Presence", labels = c("No", "Yes")) +  # Using viridis for better color representation
+  labs(
+    title = "Global Dengue Distribution in 2019",
+    subtitle = "Presence of Dengue Virus Reported by Country",
+    x = "Longitude",
+    y = "Latitude",
+    caption = "Author: Thiyanga S. Talagala, Source: https://denguedatahub.netlify.app/world.html"  # Adding caption
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, size = 12),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 12)
+  )
+
+  
+
+```
+
+# Relationship with longitude and latitude
+
+```{r, warning=FALSE, message=FALSE,fig.height=10, fig.width=10}
+library(tidyverse)
+sum.ll <-  world_annual %>%
+  filter(dengue.present == "yes") %>%
+  group_by(region, year) %>%
+  summarize(mean.longitude = mean(long),
+          mean.latitude = mean(lat),
+          incidence = sum(incidence))  
+
+sum.ll %>% filter(0 < incidence & incidence < 100000000) %>%
+ggplot( aes(x=mean.longitude, y=incidence, col=mean.latitude)) + geom_point(alpha=0.5) +
+  scale_color_viridis_c() + theme_bw() + 
+  facet_wrap(~year) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+sum.ll %>% filter(0 < incidence & incidence < 100000000) %>%
+ggplot( aes(x=mean.latitude, y=incidence, col=mean.longitude)) + geom_point(alpha=0.5) +
+  scale_color_viridis_c() +
+  theme_bw()+ 
+  facet_wrap(~year) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+# Relationship with absolute values of longitude and latitude
+
+```{r, warning=FALSE, message=FALSE, fig.height=10, fig.width=10}
+sum.ll %>% filter(0 < incidence & incidence < 100000000) %>%
+ggplot( aes( y=incidence, x=abs(mean.latitude))) + geom_point(alpha=0.5) +
+   theme_bw() + 
+  facet_wrap(~year) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+sum.ll %>% filter(0 < incidence & incidence < 100000000) %>%
+ggplot( aes(x=abs(mean.longitude), y=incidence)) + geom_point(alpha=0.5) +
+   theme_bw() + 
+  facet_wrap(~year) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+# Dynamic visualization
+
+```{r, warning=FALSE, message=FALSE}
+library(gganimate)
+sum.ll$year <- as.integer(sum.ll$year)
+sum.ll %>% filter(0 < incidence & incidence < 100000000) %>%
+ggplot( aes( y=incidence, x=abs(mean.latitude), col=mean.longitude)) + geom_point(alpha=0.5) +
+   theme_bw() + 
+   scale_color_viridis_c() +
+ theme(
+   axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+   transition_time(year) +
+  labs(title = "Year: {frame_time}")
+```
+

@@ -1,0 +1,78 @@
+---
+title: "Sri Lanka"
+toc: true
+format:
+  html:
+    theme: default
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMF7S9CQZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MMF7S9CQZW');
+</script>
+
+# District-wise weekly Dengue cases from 2006 to 2023-present
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE}
+library(denguedatahub)
+library(tsibble)
+srilanka_weekly_data
+srilanka_weekly_data$start.date <- as.Date(
+  srilanka_weekly_data$start.date,
+  format = "%d/%m/%Y"
+)
+srilanka_weekly_data$end.date <- as.Date(
+  srilanka_weekly_data$end.date,
+  format = "%d/%m/%Y"
+)
+```
+
+#  Identification of dengue serotypes circulating in Sri Lanka
+
+```{r}
+head(sl_dengue_serotype)
+```
+
+#  Type and proportion of breeding habitats positive for Aedes aegypti mosquitoes, across provinces in Sri Lanka, 2017
+
+```{r}
+head(sl_sites)
+```
+
+# Annual reported dengue cases in Sri Lanka
+
+```{r}
+head(sl_annual)
+```
+
+# Tutorial: Visualisation of Data
+
+## Visualize `srilanka_weekly_data`
+
+```{r}
+visdat::vis_dat(srilanka_weekly_data)
+```
+
+## Time series visualization 
+
+```{r, warning=FALSE, message=FALSE, fig.height=20, fig.width=15}
+library(plotly)
+library(viridis)
+
+#  Visualizing colombo district cases
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+srilanka_weekly_data %>%  
+ggplot(aes(x=start.date, y=cases)) + geom_line()  + 
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_wrap(vars(district), scales = "free_y", ncol=5)
+
+
+```
+
+

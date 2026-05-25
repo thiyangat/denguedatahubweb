@@ -1,0 +1,54 @@
+---
+title: ""
+image: cover.png
+about:
+  template: marquee
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/thiyangt
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/thiyanga-talagala-24bb63134/
+    - icon: github
+      text: Github
+      href: https://github.com/thiyangt/denguedatahub
+---
+
+<style>
+.centered-heading {
+  text-align: center;
+  color: blue;
+  animation: fadeIn 3s ease-in-out;
+}
+
+.red-text {
+  color: red;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+</style>
+
+# <span class="centered-heading">Welcome to the <span class="red-text">Dengue Data Hub</span>, a centralized repository for dengue-related data from around the world!</span>
+
+
+::: {.callout-note style="padding: 30px; font-size: 80px; border-width: 2px;"}
+
+# We have data for 225 countries around the world!
+
+:::
+
+
+# Author: [Dr Thiyanga S. Talagala](https://thiyanga.netlify.app/)
+
+
+# Funded by
+
+![](consortium.png)
+
+[R consortium, , USA](https://www.r-consortium.org/)
+
+# Contact: ttalagala@sjp.ac.lk
